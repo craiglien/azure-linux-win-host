@@ -2,7 +2,15 @@
 terraform {
   required_providers {
     azurerm = {
-      source = "hashicorp/azurerm"
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~>4.0"
+    }
+    local = {
+      source  = "hashicorp/local"
       version = "~>2.0"
     }
   }
@@ -123,8 +131,8 @@ resource "azurerm_linux_virtual_machine" "vm-linux" {
 
     source_image_reference {
         publisher = "Canonical"
-        offer     = "UbuntuServer"
-        sku       = "18.04-LTS"
+        offer     = "0001-com-ubuntu-server-focal"
+        sku       = "20_04-lts-gen2"
         version   = "latest"
     }
 
@@ -235,6 +243,7 @@ resource "azurerm_windows_virtual_machine" "vm-windows" {
   size                = "Standard_F2"
   admin_username      = "adminuser"
   admin_password      = "P@$$w0rd1234!"
+  vm_agent_platform_updates_enabled = false
   network_interface_ids = [
   	azurerm_network_interface.nic-forwindowshost.id
    ]
@@ -247,7 +256,7 @@ resource "azurerm_windows_virtual_machine" "vm-windows" {
   source_image_reference {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
-    sku       = "2016-Datacenter"
+    sku       = "2022-Datacenter"
     version   = "latest"
   }
 }
